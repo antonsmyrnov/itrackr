@@ -1,0 +1,32 @@
+extends layout
+
+block content
+	div(class="row-fluid")
+		div(class="span2") &nbsp;
+		div(class="span8")
+			div(style="text-align:center")
+				h1 Welcome to iTrackr, #{count}, #{session_id}
+			div(class="row-fluid")
+				div(class="span6")
+					div(style="text-align:center")
+						h2 Login
+					form(method="post", action="/login")
+						label(for="login_email") Email					
+						input(type="email", id="login_email", name="email", placeholder="Email")
+						label(for="login_password") Password
+						input(type="password", id="login_password", name="password", placeholder="Password")
+						br
+						button(type="submit", class="btn btn-primary") Sign in
+				div(class="span6")
+					div(style="text-align:center")
+						h2 Register
+					form(method="post", action="/register")
+						label(for="login_email") Email					
+						input(type="email", id="login_email", name="email", placeholder="Email")
+						label(for="login_password") Password
+						input(type="password", id="login_password", name="password", placeholder="Password")
+						label(for="login_password") Password (again)
+						input(type="password", id="login_password", name="password2", placeholder="Password")
+						br
+						button(type="submit", class="btn btn-primary") Sign up
+		div(class="span2") &nbsp;

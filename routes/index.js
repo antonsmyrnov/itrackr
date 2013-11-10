@@ -20,17 +20,27 @@ function is_authenticated(req, success, failure) {
 	});
 }
 
+function find_unique_key(req, res, user) {
+	var User = mongoose.model( 'User' );
+	var key = crypto.randomBytes(20).toString('hex');
+	User.find({key: key},function(err, users) {
+		if (users.length === 0) {
+			User.update({email: user.email}, {$set: {'key': key}}, function() {
+				res.redirect('/');
+			});
+		}
+		else {
+			find_unique_key(req, res, user);
+		}
+	});
+}
+
 exports.generate_key = function(req, res){
 	var User = mongoose.model( 'User' );
 	is_authenticated(req, 
 		function() {
 			User.find({_id: new ObjectId(req.session.user_id)},function(err, users) {
-				var user = users[0];
-				var key = crypto.randomBytes(20).toString('hex');
-				user.key = key;
-				User.update({email: user.email}, {$set: {'key': key}}, function() {
-					res.redirect('/');
-				});
+				find_unique_key(req, res, users[0]);
 			});
 		},
 		function() {
